@@ -19,6 +19,7 @@ Early log rollover → lost evidence, reduced auditability.
 
 ## Remediation
 Run `scripts/Fix-StigWN10-AU-000500.ps1`.
+Run `scripts/MaxSize.ps1`
 
 ## Validation
 - `Verify-EventLogSize.ps1` output attached
