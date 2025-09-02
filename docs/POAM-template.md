@@ -10,6 +10,7 @@ Application log max size below 32768 KB.
 
 ## Evidence
 - Screenshot: Tenable FAIL
+<img src="https://i.imgur.com/E6o3Z1U.png">
 - Registry: `HKLM\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application\MaxSize`
 - Live channel: `wevtutil gl Application` shows maxSize < 32768
 
