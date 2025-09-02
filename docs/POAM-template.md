@@ -1,6 +1,6 @@
 # POA&M Entry – WN10-AU-000500
 
-**System:** <hostname / VM ID>  
+**System:** <WIN-10-Target-G / VM ID 'cd015a7d-a927-49c6-896a-67d4a4886ef4'>  
 **Control:** WN10-AU-000500 – Application log size >= 32768 KB  
 **Severity:** CAT II  
 **Scanner:** Tenable (scan id/date)
