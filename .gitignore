@@ -1,0 +1,10 @@
+# PowerShell / Windows
+*.log
+*.bak
+*.tmp
+*.DS_Store
+*.Thumbs.db
+
+# Evidence exports
+evidence/*.zip
+evidence/*.csv
