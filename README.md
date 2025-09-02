@@ -40,3 +40,61 @@ Small log sizes roll over quickly, losing evidence needed for incident response 
 .\scripts\Verify-EventLogSize.ps1 -LogName Application -OutCsv .\evidence\verify-after-fix.csv
 
 # 5) Re-run Tenable scan → expect PASS
+
+
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the maximum size of the Windows Application event log is at least 32768 KB (32 MB).
+
+.NOTES
+    Author          : Grisham DelRosario
+    LinkedIn        : linkedin.com/in/grishamdelrosario/
+    GitHub          : github.com/charliecash310
+    Date Created    : 2025-09-01
+    Last Modified   : 2025-09-01
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-AU-000500
+
+.TESTED ON
+    Date(s) Tested  : 2025-09-01
+    Tested By       : Grisham DelRosario
+    Systems Tested  : Windows 10
+    PowerShell Ver. : 5.1.19041.6216
+
+.USAGE
+    Use Powershell ISE or VSCode to run the script.
+    Example syntax:
+    PS C:\> .\MaxSize.ps1 
+
+#>
+
+# --- STIG: WN10-AU-000500  (Application log >= 32768 KB) ---
+
+$minKB = 32768
+$polPath = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application'
+$polName = 'MaxSize'
+
+# 1) Ensure the policy registry path/value exists and is >= 32768
+New-Item -Path $polPath -Force | Out-Null
+$current = (Get-ItemProperty -Path $polPath -Name $polName -ErrorAction SilentlyContinue).$polName
+if (-not $current -or $current -lt $minKB) {
+    New-ItemProperty -Path $polPath -Name $polName -PropertyType DWord -Value $minKB -Force | Out-Null
+}
+
+# 2) Apply immediately to the live channel (so you don't have to wait for gpupdate/reboot)
+wevtutil sl Application /ms:$minKB | Out-Null
+
+# (Optional but recommended) ensure retention is "Overwrite events as needed"
+wevtutil sl Application /rt:false /ab:false | Out-Null
+
+# 3) Verify
+$policySet = (Get-ItemProperty -Path $polPath -Name $polName).$polName
+$liveInfo  = wevtutil gl Application
+$liveSize  = ($liveInfo | Select-String -Pattern 'maxSize:\s*(\d+)').Matches.Groups[1].Value
+
+Write-Host "Policy MaxSize (KB): $policySet (required >= $minKB)"
+Write-Host "Live channel maxSize (KB): $liveSize (required >= $minKB)"
+Write-Host "Retention:" (($liveInfo | Select-String 'retention:\s*(\w+)').Matches.Groups[1].Value) " (false = overwrite as needed)"
+
