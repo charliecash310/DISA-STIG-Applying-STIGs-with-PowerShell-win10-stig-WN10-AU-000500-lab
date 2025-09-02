@@ -22,7 +22,8 @@ Run `scripts/Fix-StigWN10-AU-000500.ps1`.
 
 ## Validation
 - `Verify-EventLogSize.ps1` output attached
-- Tenable re-scan: PASS (screenshot)
+- Tenable re-scan: PASS
+<img src="https://i.imgur.com/XYQzj9s.png">
 
 ## Residual Risk
 None.
