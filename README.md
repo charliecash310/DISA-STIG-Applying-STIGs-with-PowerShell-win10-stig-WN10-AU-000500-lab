@@ -18,6 +18,7 @@ Small log sizes roll over quickly, losing evidence needed for incident response 
 - `scripts/Fix-StigWN10-AU-000500.ps1` – remediation (policy + live)
 - `scripts/Verify-EventLogSize.ps1` – quick local audit (prints + CSV)
 - `scripts/Set-EventLogSizeBulk.ps1` – apply min sizes to Application/Security/System
+- `scripts/MaxSize.ps1` - original script for elevated privileges
 - `docs/POAM-template.md` – ready-to-fill remediation write-up
 - `evidence/` – drop screenshots: Fail → Fix → Pass
 
